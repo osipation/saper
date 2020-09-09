@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
 public class EndFrame extends JFrame {
-    public JPanel endPanel;
-    JButton replay = new JButton("Заново!");
-    JButton exit = new JButton("В пизду!");
+    JPanel endPanel;
+    JButton replayButton = new JButton("Заново!");
+
+    JButton exitButton = new JButton("В пизду!");
+
     private JavaSweeper sweep;
 
 //    private JPanel initPanel (){
@@ -24,26 +26,28 @@ public class EndFrame extends JFrame {
 //        };
 //    }
 
-    public EndFrame (JavaSweeper sweep){
+    public EndFrame(JavaSweeper sweep) {
         this.sweep = sweep;
         endPanel = new JPanel();
-        endPanel.add(replay);
-        endPanel.add(exit);
+        endPanel.add(replayButton);
+        endPanel.add(exitButton);
+        replayButton.addActionListener(new ReplayListener());
+        exitButton.addActionListener(new ExitListener());
         this.getContentPane().add(endPanel);
-        exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        replay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sweep.startGameProcess();
-                EndFrame.this.dispatchEvent(new WindowEvent(EndFrame.this, WindowEvent.WINDOW_CLOSING));
+        //возможный вариант через переопределение
+//        exitButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.exit(0);
+//            }
+//        });
+//        replayButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                sweep.startGameProcess();
+//            }
+//        });
 
-            }
-        });
         initEndFrame();
 
     }
@@ -55,6 +59,19 @@ public class EndFrame extends JFrame {
         setSize(new Dimension(300, 75));
         setVisible(true);
         setLocationRelativeTo(null);//окно по центру
+    }
+//Возможен вариант через вложенные классы
+    class ReplayListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            sweep.startGameProcess();
+
+        }
+    }
+
+    class ExitListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            System.exit(0);
+        }
     }
 
 }
